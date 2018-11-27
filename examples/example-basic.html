@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>digital-data-queue / example</title>
+	<meta name="author" content="Oogst">
+	<!-- digital-data-queue debugger -->
+	<script src="../../digital-data-queue-debug/dist/ddq-debug.min.js"></script>	
+	<!-- digital-data-queue library -->
+	<script src="../dist/ddq.min.js"></script>
+	<script>
+		
+		// Global scope
+		var digitalData = digitalData || [];
+
+		// Push page information
+		digitalData.push({
+			event: "page", // Eventtype
+			timestamp: Date.now(),
+			page_type: "product",
+			product: [{
+				product_id: "12345",
+				product_name: "25 mei Amsterdam ArenA",
+				category: "avondje-uit",
+				category_id: "456"
+			}],
+			user_id: "999999"
+		});
+
+		// Clickhelper
+		function clickHelper(category,action) {
+			digitalData.push({
+				event: "click", // Eventtype
+				timestamp: Date.now(),
+				event_category: category,
+				event_action: action
+			});
+		}
+
+		// Event listener
+		function eventListener(model, event, originalEvent) {
+			console.log('Hello! This is event listener');
+			console.log(event)
+		}
+
+		// Transform handler
+		function transform(event) {
+			// Add a property
+			event.newproperty = 'jaja';
+			
+			// Convert page_type to uppercase when present
+			if (typeof event.page_type != 'undefined') { event.page_type = event.page_type.toUpperCase(); }
+			
+			// return transformed event
+			return event;
+		}
+
+	</script>
+</head>
+<body>
+	<h1>Some online shop</h1>
+	<h3>Shoes</h3>
+	<ul>
+	    <li>Nice shoes</li>
+	    <li>Only 99.99!</li>
+	</ul>
+	<a href="#" onclick="clickHelper('interaction','add_to_cart')">Add to cart</a>
+	<a href="#" onclick="clickHelper('interaction','add_to_favorites')">Add to favorites</a>
+
+	<script>
+		// Datalayer array, eventhandler, process historic data
+		var _ddq = new DigitalDataQueue(digitalData, 'test_queue', [eventListener], { 
+			history: true, 
+			debug: true,
+			transform: true,
+			transformHandler: transform
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+digital-data-queue
+-----
+Copyright 2017-2018 Oogst
+
+=======================================================================
+
+This product includes code adapted from:
+
+data-layer-helper:
+-----
+This product contains a heavily modified portion and rewritten version (ES6) of 'Data Layer Helper Library' developed by Google Inc.
+(https://github.com/google/data-layer-helper).
+
+Copyright 2012 Google Inc.
