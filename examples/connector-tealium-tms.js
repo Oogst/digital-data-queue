@@ -1,4 +1,5 @@
 // Add as a Tealium extension, fire before load once.
+// Disable default pageview / view() event on load, since the DDQ connector uses the "page" event.
 
 // Declare
 window.digitalData = window.digitalData || [];
@@ -13,7 +14,7 @@ digitalData.push({
 });
 
 // Mapping digitalData events to Tealium iQ / Tag Management
-function tealiumMapper(model, event, sourceEvent) {
+function tealiumConnector(model, event, sourceEvent) {
    
     // Declare utag_data / UDO (Tealium datalayer)
     window.utag_data = window.utag_data || [];
@@ -40,4 +41,9 @@ function tealiumMapper(model, event, sourceEvent) {
 }
 
 // Init Digital Data Queue model
-window.digitalDataQueue = new DigitalDataQueue(digitalData, connector, [tealiumMapper], true);
+window.digitalDataQueue = new DigitalDataQueue(digitalData, connector, [tealiumConnector], { 
+    history: true,
+    debug: false,
+    transform: false,
+    transformHandler: function(event) { return event; }
+});
